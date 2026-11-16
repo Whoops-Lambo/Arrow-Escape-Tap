@@ -32,6 +32,8 @@ jobs:
           unzip -t ios/build/ArrowEscape.ipa
           test -f ios/build/package/Payload/ArrowEscape.app/index.html
           test -f ios/build/package/Payload/ArrowEscape.app/ArrowEscape
+          test -f ios/build/package/Payload/ArrowEscape.app/Assets.car
+          /usr/libexec/PlistBuddy -c "Print :CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconName" ios/build/package/Payload/ArrowEscape.app/Info.plist | /usr/bin/grep -x AppIcon
       - name: Downloadable IPA
         uses: actions/upload-artifact@v4
         with:
