@@ -124,10 +124,26 @@ view does not jump or shrink while arrows leave. Pinch or use **+** to zoom up
 to 14×; drag to pan. Taps below a readable cell size prompt for zoom rather
 than costing a heart. Hints center and zoom onto a free arrow.
 
-The supplied reference ZIP could not be inspected because it exceeds the
-workspace transfer limit of 32 MB, and the Play Store page was inaccessible.
-The current visual design remains an original minimal thin-arrow presentation;
-a closer visual comparison needs screenshots or a smaller reference archive.
+## Reference review
+
+The user-supplied reference repository, [arrow-escape-template](https://github.com/Whoops-Lambo/arrow-escape-template),
+was inspected at commit `7d512d177fc367612c509b9857eafac023cd1f5d`.
+It is an extracted Android Unity application, with compiled asset bundles and
+Android support/advertising code, rather than an editable HTML or iOS project.
+The main-level bundle contains 3,983 level definitions with compact corner
+indices and named styles including Snake, Loopy, Aztec, and Spaghetti. A sample
+53-arrow board uses path lengths ranging from 2 to 32 cells.
+
+The standalone game uses that path variety and the supplied screenshots as
+references. Its own dense generator now exchanges tails across adjacent path
+edges, preserving heads and connectivity. Each exchange batch is independently
+solved and reverted if it creates a dependency cycle. This gives less repetitive
+paths without losing full coverage, tier counts, or the 1,000-level progression.
+Cleared cells show faint dots and spent hearts remain filled lavender.
+
+Unity bundles and Android code are not bundled into the HTML or iPhone app;
+the reference review does not establish pixel-identical behavior. The game
+continues to generate and validate its own puzzles offline.
 
 ## Validation
 
