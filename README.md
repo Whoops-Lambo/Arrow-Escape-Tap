@@ -92,9 +92,40 @@ a separate greedy solver repeatedly removes free arrows and rejects the board
 unless every arrow can be removed. Removing pieces cannot create a new blocker,
 so any currently free arrow is safe to choose.
 
-Grid size increases from 5×5 to 12×12; coverage, maximum body length, and arrow
-count increase with progression. Seeds make normal levels and each daily
-challenge reproducible.
+## Shuffled difficulty and large boards
+
+Each level has a reproducible, shuffled difficulty tier, shown above the level
+number. As requested, an easier tier can follow a harder one, so the total arrow
+count can decrease between levels. Within each tier, later levels trend toward
+its upper count, with seeded variation. Board dimensions, length, density, and
+layout also vary. Daily challenges seed both their tier and layout from the
+local calendar date.
+
+| Difficulty | Arrows |
+| --- | --- |
+| Easy | 25–40 |
+| Medium | 50–75 |
+| Hard | 100–150 |
+| Very Hard | 150–200 |
+| Nightmare | 200–250 |
+| Extreme Nightmare | 300–400 |
+
+Generation must meet the exact selected count and pass the solver before a
+board is shown. Crowded generation retries on larger boards; a deterministic,
+solvable lane layout provides an exact-count fallback. The 150 level slots and
+existing unlocks/stars remain, but their puzzles have been regenerated under
+the new difficulty system.
+
+Large puzzles open in overview mode. Pinch or use **+** to zoom up to 14×;
+drag to pan and **Fit** to see the whole board. Taps below a readable cell size
+prompt for zoom rather than costing a heart. Hints center and zoom onto a free
+arrow. Particle counts are capped, and completion updates are batched so many
+arrows can escape together.
+
+The supplied reference ZIP could not be inspected because it exceeds the
+workspace transfer limit of 32 MB, and the Play Store page was inaccessible.
+The current visual design remains an original minimal thin-arrow presentation;
+a closer visual comparison needs screenshots or a smaller reference archive.
 
 ## Validation
 
@@ -113,3 +144,13 @@ rapid consecutive escapes, a newly freed dependent arrow, ignoring repeat taps
 on moving arrows, undo/hints during animation, blocked taps while another arrow
 escapes, and completion after all final animations finish. Theme/color selection
 and persistence were checked in a mobile browser.
+
+### Current generator checks
+
+Run `node tests/generator.cjs` (no dependencies). It checks all 150 levels with
+three seeds each for tier counts, full solutions, connected paths, bounds and
+non-overlap, deterministic output, multiple board sizes, rejection of a cyclic
+board, and a reachable 400-arrow level. Mobile Chromium flow checks also cover
+overview tap protection, zoom controls, hint targeting, undo, restart, 400
+concurrent escapes and completion, daily determinism, and theme/color settings.
+Physical iPhone performance and the current IPA build remain separate checks.
