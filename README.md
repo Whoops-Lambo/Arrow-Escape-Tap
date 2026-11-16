@@ -185,3 +185,15 @@ ratios differ. Clears still leave dots at the cells that actually held arrows.
 Rendering checks covered light/dark and color/monochrome modes, pixel samples
 inside the heads, two phone sizes, Fit and zoom. All 1,000 generated puzzles
 passed the generator validation suite.
+
+### Arrow path guides
+
+Press **Paths** below the board to show a dotted cell grid and dashed forward
+guides from each stationary arrowhead to the occupied board edge. Guides share
+the puzzle's zoom/pan transform. Tapping an arrow hides the guides immediately
+on either a successful or blocked move. Undo does not re-enable them; press
+Paths to show them again. Empty taps and viewport gestures leave the setting
+alone. Each level starts with guides hidden. The button exposes its state with
+`aria-pressed`. Geometry is cached and rebuilt after viewport changes or a new
+activation. Mobile browser checks covered actual touch auto-hide, blocked taps,
+manual reactivation, undo, zoom/Fit, both themes, and narrow-phone layout.
