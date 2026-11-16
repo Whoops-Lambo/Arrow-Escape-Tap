@@ -124,26 +124,10 @@ view does not jump or shrink while arrows leave. Pinch or use **+** to zoom up
 to 14×; drag to pan. Taps below a readable cell size prompt for zoom rather
 than costing a heart. Hints center and zoom onto a free arrow.
 
-## Reference review
-
-The user-supplied reference repository, [arrow-escape-template](https://github.com/Whoops-Lambo/arrow-escape-template),
-was inspected at commit `7d512d177fc367612c509b9857eafac023cd1f5d`.
-It is an extracted Android Unity application, with compiled asset bundles and
-Android support/advertising code, rather than an editable HTML or iOS project.
-The main-level bundle contains 3,983 level definitions with compact corner
-indices and named styles including Snake, Loopy, Aztec, and Spaghetti. A sample
-53-arrow board uses path lengths ranging from 2 to 32 cells.
-
-The standalone game uses that path variety and the supplied screenshots as
-references. Its own dense generator now exchanges tails across adjacent path
-edges, preserving heads and connectivity. Each exchange batch is independently
-solved and reverted if it creates a dependency cycle. This gives less repetitive
-paths without losing full coverage, tier counts, or the 1,000-level progression.
-Cleared cells show faint dots and spent hearts remain filled lavender.
-
-Unity bundles and Android code are not bundled into the HTML or iPhone app;
-the reference review does not establish pixel-identical behavior. The game
-continues to generate and validate its own puzzles offline.
+The supplied reference ZIP could not be inspected because it exceeds the
+workspace transfer limit of 32 MB, and the Play Store page was inaccessible.
+The current visual design remains an original minimal thin-arrow presentation;
+a closer visual comparison needs screenshots or a smaller reference archive.
 
 ## Validation
 
@@ -186,3 +170,18 @@ All 1,000 levels passed density, connectivity, count, and solver checks; level
 10 fit checks passed at small portrait, large portrait, and landscape sizes.
 Mobile browser tests checked off-stroke taps, undo, panning without text
 selection, and Fit. Native iPhone behavior still needs device verification.
+
+### Pre-template base restored and arrow visibility fixed
+
+The current version restores the pre-reference release `c97b4a7` and applies
+only rendering/layout fixes to that base. Its procedural generator matches that
+release; no code, assets, or level data from the supplied template repository
+are included. Arrowhead length stays at least 6.25 CSS pixels in fitted view,
+and heads scale proportionally at higher zoom. Background dots no longer draw
+on an unused square grid. Zoom controls are below the canvas, so Fit can use
+the canvas height without reserving an overlay strip. Square cell proportions
+are preserved; natural margins may remain when the puzzle and screen aspect
+ratios differ. Clears still leave dots at the cells that actually held arrows.
+Rendering checks covered light/dark and color/monochrome modes, pixel samples
+inside the heads, two phone sizes, Fit and zoom. All 1,000 generated puzzles
+passed the generator validation suite.
