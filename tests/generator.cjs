@@ -15,6 +15,7 @@ for(let level=1;level<=TOTAL;level++)for(let seed=0;seed<1;seed++){
   const [x,y]=p.cells[i];assert.ok(x>=0&&y>=0&&x<g.n&&y<g.n);assert.ok(!occupied.has(`${x},${y}`));occupied.add(`${x},${y}`);
   if(i)assert.equal(Math.abs(x-p.cells[i-1][0])+Math.abs(y-p.cells[i-1][1]),1);
  }}
+ assert.equal(occupied.size,g.width*g.height,'No empty cells in dense bounds');
  tiers.add(g.tier.name);sizes.add(g.n);tested++;
 }
 assert.equal(tiers.size,6);assert.ok(sizes.size>10);
@@ -25,4 +26,4 @@ assert.equal(solve([{id:0,cells:[[0,0],[1,0]],dir:1},{id:1,cells:[[3,0],[2,0]],d
 const level=Array.from({length:TOTAL},(_,i)=>TOTAL-i).find(l=>levelSpec(l,0).tierIndex===5);
 let found=false;for(let seed=0;seed<1000;seed++)if(levelSpec(level,seed).count===400){assert.equal(generate(level,seed).pieces.length,400);found=true;break}
 assert.ok(found,'400-arrow board is reachable');
-console.log(`${tested} boards passed: exact counts, six tiers, ${sizes.size} grid sizes, solvability, adjacency, bounds, non-overlap, deterministic seeds, cycle rejection, 400-arrow board. Slowest generation: ${Math.round(maxMs)} ms.`);
+console.log(`${tested} boards passed: exact counts, six tiers, ${sizes.size} grid sizes, solvability, adjacency, bounds, non-overlap, full density, deterministic seeds, cycle rejection, 400-arrow board. Slowest generation: ${Math.round(maxMs)} ms.`);
