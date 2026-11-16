@@ -15,7 +15,9 @@ permissions:
 jobs:
   build:
     name: Build IPA for Sideloadly
-    runs-on: macos-15
+    # Use the Intel pool when Apple Silicon runners are slow to provision.
+    # Xcode still cross-compiles the IPA for arm64 iPhones.
+    runs-on: macos-15-intel
     timeout-minutes: 20
     steps:
       - name: Check out game
