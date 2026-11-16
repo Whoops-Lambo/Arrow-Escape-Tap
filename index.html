@@ -90,7 +90,7 @@ function generate(level,seed){
  const columns=Math.ceil(spec.count/rows),width=columns*(3+Math.floor(random()*2));
  const bands=[];let height=0,remaining=spec.count;
  for(let row=0;row<rows;row++){
-  const count=Math.ceil(remaining/(rows-row)),h=2+Math.floor(random()*3);
+  const count=Math.ceil(remaining/(rows-row)),h=row%4===0?1:2+Math.floor(random()*4);
   bands.push({y:height,h,count,left:random()<.5});height+=h;remaining-=count;
  }
  const n=Math.max(width,height);
@@ -110,10 +110,25 @@ function generate(level,seed){
   while(spare-->0)widths[Math.floor(random()*widths.length)]++;
   const tiles=[];let x=0;for(const w of widths){tiles.push({x,w});x+=w}
   if(band.left)tiles.reverse();
-  for(const tile of tiles){
+  for(let ti=0;ti<tiles.length;ti++){
+   const tile=tiles[ti];
+   // Paired tiles can become an L-shaped arrow plus a simple interior path.
+   // Both heads point toward the band's known-clear escape edge.
+   if(band.h>=2&&ti+1<tiles.length&&random()<.35){
+    const next=tiles[++ti],x=Math.min(tile.x,next.x),w=tile.w+next.w,dir=band.left?3:1;
+    const far=band.left?x+w-1:x,edge=band.left?x:x+w-1,cells=[];
+    for(let y=band.y+band.h-1;y>=band.y;y--)cells.push([far,y]);
+    for(let xx=far+(band.left?-1:1);band.left?xx>=edge:xx<=edge;xx+=band.left?-1:1)cells.push([xx,band.y]);
+    const inner=path(band.left?x:x+1,band.y+1,w-1,band.h-1,dir,false);
+    for(const body of [cells,inner]){
+     const piece={id:pieces.length,cells:body,dir,color:COLORS[pieces.length%COLORS.length],removed:false,slide:0,shake:0};
+     pieces.push(piece);for(const c of body)occupied.add(key(...c));
+    }
+    continue;
+   }
    const options=[];
    for(let dir=0;dir<4;dir++)for(const flip of [false,true]){
-    const cells=path(tile.x,band.y,tile.w,band.h,dir,flip),head=cells.at(-1),d=dirs[dir];let clear=true;
+    const cells=path(tile.x,band.y,tile.w,band.h,dir,flip),head=cells.at(-1),neck=cells.at(-2),d=dirs[dir];if(!neck||head[0]-neck[0]!==d[0]||head[1]-neck[1]!==d[1])continue;let clear=true;
     for(let xx=head[0]+d[0],yy=head[1]+d[1];xx>=0&&yy>=0&&xx<n&&yy<n;xx+=d[0],yy+=d[1])if(occupied.has(key(xx,yy))){clear=false;break}
     if(clear)options.push({cells,dir});
    }
@@ -193,7 +208,7 @@ for(const p of particles){p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;if(p.confetti)p.v
 for(const event of ['selectstart','dragstart','contextmenu'])document.querySelector('.app').addEventListener(event,e=>e.preventDefault());
 const pointers=new Map();let gesture=null;
 function distanceToSegment(p,a,b){const dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dy)/(dx*dx+dy*dy||1)));return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy)}
-function hit(x,y){if(cell*view.zoom<13){toast('Zoom in with + or pinch to select an arrow.');return;}const p=[(x-W/2-view.x)/view.zoom+W/2,(y-H/2-view.y)/view.zoom+H/2];let best=null,dist=Infinity;for(const a of game.pieces)if(!a.removed&&!a.slide)for(let i=1;i<a.cells.length;i++){const d=distanceToSegment(p,screen(a.cells[i-1]),screen(a.cells[i]));if(d<dist){dist=d;best=a}}if(dist<=Math.max(cell*.42,14/view.zoom))tap(best)}
+function hit(x,y){const p=[(x-W/2-view.x)/view.zoom+W/2,(y-H/2-view.y)/view.zoom+H/2];let best=null,dist=Infinity;for(const a of game.pieces)if(!a.removed&&!a.slide)for(let i=1;i<a.cells.length;i++){const d=distanceToSegment(p,screen(a.cells[i-1]),screen(a.cells[i]));if(d<dist){dist=d;best=a}}if(dist<=Math.max(cell*.42,14/view.zoom))tap(best)}
 function coords(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
 function pinchData(){const [a,b]=[...pointers.values()];return{distance:Math.hypot(a.x-b.x,a.y-b.y),x:(a.x+b.x)/2,y:(a.y+b.y)/2}}
 function clampPan(){view.x=Math.max(-W*(view.zoom-1)/2-30,Math.min(W*(view.zoom-1)/2+30,view.x));view.y=Math.max(-H*(view.zoom-1)/2-30,Math.min(H*(view.zoom-1)/2+30,view.y));if(view.zoom===1)view.x=view.y=0}

@@ -121,8 +121,7 @@ The initial view and **Fit** use the original occupied bounds and preserve
 square cells, centering the entire puzzle within the available canvas. Zoom
 controls have a reserved strip so they cannot cover the fitted puzzle. The
 view does not jump or shrink while arrows leave. Pinch or use **+** to zoom up
-to 14×; drag to pan. Taps below a readable cell size prompt for zoom rather
-than costing a heart. Hints center and zoom onto a free arrow.
+to 14×; drag to pan. Arrows can be tapped at any zoom level, including the initial fitted overview. Hints center and zoom onto a free arrow.
 
 The supplied reference ZIP could not be inspected because it exceeds the
 workspace transfer limit of 32 MB, and the Play Store page was inaccessible.
@@ -199,3 +198,15 @@ activation. Mobile browser checks covered actual touch auto-hide, blocked taps,
 manual reactivation, undo, zoom/Fit, both themes, and narrow-phone layout.
 
 Arrowheads are now at least 10.8 CSS pixels long and 12 CSS pixels wide in the fitted view, scaling proportionally with zoom. They render after all arrow bodies so neighboring strokes cannot cover their tips. Rendering checks passed in color and monochrome, light and dark themes.
+
+### Shape variety and overview tapping
+
+Puzzles now deliberately mix straight arrows, single-bend L paths, U-shaped
+and two-bend paths, zigzags, and longer winding pieces. Thin row bands provide
+straight arrows, while paired partitions provide L paths without empty cells.
+Every generated board is checked for at least a 15% straight-arrow share as
+well as bent arrows, full density, exact counts, and a complete solution.
+The forced zoom threshold has been removed: tap directly in the fitted view,
+or zoom optionally for precision. The nearest stationary arrow within the
+forgiving hit area is selected. Touch checks passed without zooming on levels
+10, 12, and 999. Arrowhead enlargement remains enabled.
