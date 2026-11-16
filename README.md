@@ -176,7 +176,7 @@ selection, and Fit. Native iPhone behavior still needs device verification.
 The current version restores the pre-reference release `c97b4a7` and applies
 only rendering/layout fixes to that base. Its procedural generator matches that
 release; no code, assets, or level data from the supplied template repository
-are included. Arrowhead length stays at least 6.25 CSS pixels in fitted view,
+are included. Arrowhead length stays at least 10.8 CSS pixels in fitted view,
 and heads scale proportionally at higher zoom. Background dots no longer draw
 on an unused square grid. Zoom controls are below the canvas, so Fit can use
 the canvas height without reserving an overlay strip. Square cell proportions
@@ -197,3 +197,5 @@ alone. Each level starts with guides hidden. The button exposes its state with
 `aria-pressed`. Geometry is cached and rebuilt after viewport changes or a new
 activation. Mobile browser checks covered actual touch auto-hide, blocked taps,
 manual reactivation, undo, zoom/Fit, both themes, and narrow-phone layout.
+
+Arrowheads are now at least 10.8 CSS pixels long and 12 CSS pixels wide in the fitted view, scaling proportionally with zoom. They render after all arrow bodies so neighboring strokes cannot cover their tips. Rendering checks passed in color and monochrome, light and dark themes.
