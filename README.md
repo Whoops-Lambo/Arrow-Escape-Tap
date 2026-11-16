@@ -10,13 +10,17 @@ python3 -m http.server 8080
 ```
 
 Tap the body or head of an arrow. A clear ray ahead of its head lets it follow
-its own bends out of the board. Another arrow on that ray costs one of three
-hearts. Clear the board to unlock the next level. Hint and undo each have three
+its own bends out of the board. Another stationary arrow on that ray costs one of three
+hearts. Escaping arrows release their cells immediately and animate independently,
+so keep tapping without waiting. Tapping an arrow already leaving does nothing.
+Undo and hints also work while other arrows are moving. Clear the board to unlock the next level. Hint and undo each have three
 uses per attempt. Undo also restores the heart lost on a blocked move. Pinch to
 zoom and drag to pan; mouse wheel zoom works on desktop. Restart resets the
 attempt. Daily challenges use the device's local calendar date and don't change
 normal level progression. Settings, stars, and unlocks persist in localStorage
-when the browser permits it. Safari doesn't support web vibration; the iOS
+when the browser permits it. The default look uses thin monochrome arrows on a
+light background; Settings → Colors restores the pastel palette. Existing theme
+preferences are preserved, and light/dark themes work with either arrow style. Safari doesn't support web vibration; the iOS
 wrapper below supplies native haptics.
 
 ## Install on iPhone with Sideloadly
@@ -101,3 +105,11 @@ level completion, next-level unlocking, saved theme/progress, daily mode, and
 all 150 level-select buttons. No browser runtime errors were observed. Native
 Swift compilation and physical iPhone audio/haptics require the Mac/device
 checks above.
+
+### Concurrent move validation
+
+The independent-animation update was checked against all 150 level solutions,
+rapid consecutive escapes, a newly freed dependent arrow, ignoring repeat taps
+on moving arrows, undo/hints during animation, blocked taps while another arrow
+escapes, and completion after all final animations finish. Theme/color selection
+and persistence were checked in a mobile browser.
