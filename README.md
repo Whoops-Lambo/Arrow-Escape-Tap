@@ -1,7 +1,7 @@
 # Arrow Escape Tap
 
 An offline, touch-first Canvas puzzle game. The complete game, styles, sounds,
-and 150 seeded levels live in **index.html**. No dependencies, assets, or build step.
+and 1,000 seeded levels live in **index.html**. No dependencies, assets, or build step.
 
 Open `index.html` in a modern browser, or serve this folder:
 
@@ -112,7 +112,7 @@ local calendar date.
 
 Generation must meet the exact selected count and pass the solver before a
 board is shown. Crowded generation retries on larger boards; a deterministic,
-solvable lane layout provides an exact-count fallback. The 150 level slots and
+solvable lane layout provides an exact-count fallback. The 1,000 level slots and
 existing unlocks/stars remain, but their puzzles have been regenerated under
 the new difficulty system.
 
@@ -133,7 +133,7 @@ Validated 1,500 generated boards (ten seeds at every level), checking complete
 solutions, cell uniqueness, and connected bodies. Mobile Chromium checks cover
 blocked taps, heart restoration, hint consumption, animated removal, undo,
 level completion, next-level unlocking, saved theme/progress, daily mode, and
-all 150 level-select buttons. No browser runtime errors were observed. Native
+level-select buttons. No browser runtime errors were observed. Native
 Swift compilation and physical iPhone audio/haptics require the Mac/device
 checks above.
 
@@ -147,10 +147,12 @@ and persistence were checked in a mobile browser.
 
 ### Current generator checks
 
-Run `node tests/generator.cjs` (no dependencies). It checks all 150 levels with
-three seeds each for tier counts, full solutions, connected paths, bounds and
+Run `node tests/generator.cjs` (no dependencies). It checks all 1,000 levels with
+one seed each for tier counts, full solutions, connected paths, bounds and
 non-overlap, deterministic output, multiple board sizes, rejection of a cyclic
 board, and a reachable 400-arrow level. Mobile Chromium flow checks also cover
 overview tap protection, zoom controls, hint targeting, undo, restart, 400
 concurrent escapes and completion, daily determinism, and theme/color settings.
 Physical iPhone performance and the current IPA build remain separate checks.
+
+The game now has 1,000 selectable level slots. Existing unlocks and stars are preserved. Levels 1–150 retain their count progression; later shuffled tiers use the upper portion of their arrow ranges.
