@@ -1,0 +1,48 @@
+name: Build iPhone IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - ios/**
+      - .github/workflows/build-ios.yml
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build IPA for Sideloadly
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - name: Check out game
+        uses: actions/checkout@v4
+      - name: Show Xcode version
+        run: xcodebuild -version
+      - name: Build unsigned iPhone app and package IPA
+        run: bash ios/build-ipa.sh
+      - name: Verify IPA contents
+        run: |
+          test -s ios/build/ArrowEscape.ipa
+          unzip -t ios/build/ArrowEscape.ipa
+          test -f ios/build/package/Payload/ArrowEscape.app/index.html
+          test -f ios/build/package/Payload/ArrowEscape.app/ArrowEscape
+      - name: Downloadable IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: ArrowEscape-Sideloadly
+          path: ios/build/ArrowEscape.ipa
+          if-no-files-found: error
+          retention-days: 30
+      - name: Installation instructions
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'SUMMARY'
+          ## Your iPhone IPA
+          Download **ArrowEscape-Sideloadly** from this run's **Artifacts** section.
+          Extract the ZIP to get **ArrowEscape.ipa**, then open that IPA in Sideloadly.
+          Connect your iPhone, select your device and Apple ID, and click Start.
+          Sideloadly signs the unsigned IPA for your device; no signing secrets are needed for this build.
+          SUMMARY
